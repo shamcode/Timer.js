@@ -9,7 +9,7 @@
  */
 
 
-!function (context, doc) {
+(function (context, doc) {
 	/**
 	 * Reasonable defaults (delay: 4, units: ms), based on how Mozilla works with timers:
 	 * https://developer.mozilla.org/en/window.setTimeout#Minimum_delay_and_timeout_nesting
@@ -170,4 +170,4 @@
 	};
 	context.Timed = Timed;
 
-}(this, document);
+})(this, document);
