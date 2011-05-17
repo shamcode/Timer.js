@@ -5,7 +5,7 @@
  * Licensed under the BSD license (BSD_LICENSE.txt)
  *
  * @author <a href="mailto:chipersoft@gmail.com">Jarvis Badgley</a>
- * @version 1.0
+ * @version 1.1
  */
 
 
