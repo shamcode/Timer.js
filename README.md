@@ -35,10 +35,11 @@ These are all valid calls:
     Timed.after("50sec", function() { ... });       // 50 seconds
     Timed.after(7, "mins", function() { ... });     // 7 minutes
     Timed.after("33", "hours", function() { ... }); // 33 hours
+    Timed.after("2 hours, 45 minutes", function() { ... }); // 33 hours
     Timed.after([
     	["1", "minute"],
     	[34, "seconds"],
-    	[100, "milliseconds"]
+    	"100 milliseconds"
     ], function() { ... });
 ```
 
@@ -46,17 +47,23 @@ These are all valid calls:
 
 Valid time units include:  
 
-* millisecond (default)
+* millisecond(s) (default)
+* ms
 
-* second 
+* second(s)
+* sec(s)
+* s
 
-* minute 
+* minute(s)
+* min(s)
+* m
 
-* hour
+* hour(s)
+* hr(s)
+* h
 
-* day
-
-along with all their common abbreviations and pluralizations.
+* day(s)
+* d
 
 Meta
 ----
