@@ -65,6 +65,17 @@ Valid time units include:
 * day(s)
 * d
 
+noConflict & jQuery
+=====
+Timed supports calling the `.noConflict()` function to remove the Timed namespace.  `noConflict()` will then return the Timed object for assignment to a new location.
+
+If you wish to remap Timed's functions into jQuery's global object it can be done like so:
+
+```js
+    $.extend($.fn, Timed.noConflict());
+```
+
+
 Meta
 ----
 
