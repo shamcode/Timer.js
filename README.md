@@ -72,7 +72,7 @@ Timed supports calling the `.noConflict()` function to remove the Timed namespac
 If you wish to remap Timed's functions into jQuery's global object it can be done like so:
 
 ```js
-    $.extend($.fn, Timed.noConflict());
+    $.extend($, Timed.noConflict());
 ```
 
 
