@@ -9,7 +9,7 @@
  */
 
 
-(function (context, doc) {
+(function (context) {
 	/**
 	 * Accepts more human-readable arguments for creating JavaScript timers and 
 	 * converts them to values that can be inspected and passed along to 
@@ -87,4 +87,4 @@
 	};
 	context.Timed = Timed;
 
-})(this, document);
+})(this);
