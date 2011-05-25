@@ -27,7 +27,9 @@
 		
 		//parse the first argument. if array, merge, otherwise force string. If a second argument is passed, append it as well.
 		var period = (arguments[0] instanceof Array?arguments[0].join(''):String(arguments[0])) + (ac===3?String(arguments[1]):'');
-				
+		
+		if (isNaN(parseInt(period,10))) period = '1'+period;
+		
 		var match = period.toLowerCase().replace(/[^a-z0-9\.]/g, "").match(/(?:(\d+(?:\.\d+)?)(?:days?|d))?(?:(\d+(?:\.\d+)?)(?:hours?|hrs?|h))?(?:(\d+(?:\.\d+)?)(?:minutes?|mins?|m))?(?:(\d+(?:\.\d+)?)(?:seconds?|secs?|s))?(?:(\d+(?:\.\d+)?)(?:milliseconds?|ms))?/);
 		
 		if (match[0]) {

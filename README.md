@@ -36,6 +36,7 @@ These are all valid calls:
     Timed.after(7, "mins", function() { ... });     // 7 minutes
     Timed.after("33", "hours", function() { ... }); // 33 hours
     Timed.after("2 hours, 45 minutes", function() { ... }); // 33 hours
+	Timed.after("minute", function() { ... });      // 1 minute
     Timed.after([
     	["1", "minute"],
     	[34, "seconds"],
