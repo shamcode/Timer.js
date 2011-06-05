@@ -24,6 +24,13 @@ now you can just write:
 
 `setTimeout` becomes `Timed.after` and `setInterval` becomes `Timed.every`.
 
+Both functions return a timer object which contains the calculated interval, a reference to the callback, the setTimeout/setInterval handle, and two control functions:
+
+- `timer.cancel()`: Cancels the timer and nulls timeout id.
+- `timer.start()`: Restarts the timer after it has been canceled, using the same callback as before.
+
+Both functions return `this` to allow for chaining.
+
 Usage
 -----
 

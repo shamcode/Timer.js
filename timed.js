@@ -5,11 +5,23 @@
  * Licensed under the BSD license (BSD_LICENSE.txt)
  *
  * @author <a href="mailto:chipersoft@gmail.com">Jarvis Badgley</a>
- * @version 1.1.1
+ * @version 1.2
  */
 
 
 (function (context) {
+	
+	var timer_cancel = function () {
+		if (this.id && (1 || (this.type=='i')?clearInterval(this.id):clearTimeout(this.id))) this.id = null;
+		return this;
+	}
+	
+	var timer_start = function () {
+		this.id = (this.type=='i')?setInterval(this.callback, this.when):setTimeout(this.callback, this.when);
+		return this;
+	}
+	
+	
 	/**
 	 * Accepts more human-readable arguments for creating JavaScript timers and 
 	 * converts them to values that can be inspected and passed along to 
@@ -18,7 +30,7 @@
 	 * the default it uses the default delay and default units.
 	 */
 	function create_timer() {
-		var parsed = {when : null, callback : null},
+		var parsed = {when : null, callback : null, cancel : timer_cancel, start : timer_start},
 			ac = arguments.length;
 	
 		//parse callback function
@@ -47,7 +59,6 @@
 		return parsed;
 	}
 	
-
 	var Timed = {
 		/**
 		 * Syntactic sugar for setTimeout.
@@ -65,7 +76,8 @@
 		 */
 		after : function after() {
 			var timer = create_timer.apply(this, arguments);
-			return setTimeout(timer.callback, timer.when);
+				timer.type = 't';
+			return timer.start();
 		},
 
 		/**
@@ -78,7 +90,8 @@
 		 */
 		every : function every() {
 			var timer = create_timer.apply(this, arguments);
-			return setInterval(timer.callback, timer.when);
+				timer.type = 'i';
+			return timer.start();
 		}
 	};
 
