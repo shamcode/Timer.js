@@ -5,7 +5,7 @@
  * Licensed under the BSD license (BSD_LICENSE.txt)
  *
  * @author <a href="mailto:chipersoft@gmail.com">Jarvis Badgley</a>
- * @version 1.2
+ * @version 1.3
  */
 
 
@@ -92,6 +92,21 @@
 			var timer = create_timer.apply(this, arguments);
 				timer.type = 'i';
 			return timer.start();
+		},
+		
+		yield : function yield(callback) {
+			if (!!window.postMessage && !!window.addEventListener) {
+				//uses the postMessage feature when available.  postMessage events fire before the timeout loop triggers
+				var wrapper, id = Math.round(Math.random()*1000000);
+				window.addEventListener('message', wrapper = function () {
+					window.removeEventListener('message', wrapper);
+					if (event.data === id) callback();
+				});
+				window.postMessage(id, '*');
+			} else {
+				//setTimeout fallback for browsers that don't support postMessage.
+				Timed.after(0,'ms', callback);
+			}
 		}
 	};
 
