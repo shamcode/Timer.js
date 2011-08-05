@@ -99,8 +99,10 @@
 				//uses the postMessage feature when available.  postMessage events fire before the timeout loop triggers
 				var wrapper, id = Math.round(Math.random()*1000000);
 				window.addEventListener('message', wrapper = function (event) {
-					window.removeEventListener('message', wrapper);
-					if (event.data === id) callback();
+					if (event.data === id) {
+						window.removeEventListener('message', wrapper);
+						callback();
+					}
 				});
 				window.postMessage(id, '*');
 			} else {
