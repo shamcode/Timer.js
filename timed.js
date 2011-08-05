@@ -5,7 +5,7 @@
  * Licensed under the BSD license (BSD_LICENSE.txt)
  *
  * @author <a href="mailto:chipersoft@gmail.com">Jarvis Badgley</a>
- * @version 1.3
+ * @version 1.3.1
  */
 
 
@@ -98,7 +98,7 @@
 			if (!!window.postMessage && !!window.addEventListener) {
 				//uses the postMessage feature when available.  postMessage events fire before the timeout loop triggers
 				var wrapper, id = Math.round(Math.random()*1000000);
-				window.addEventListener('message', wrapper = function () {
+				window.addEventListener('message', wrapper = function (event) {
 					window.removeEventListener('message', wrapper);
 					if (event.data === id) callback();
 				});
