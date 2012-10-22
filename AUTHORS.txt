@@ -1,0 +1,5 @@
+Authors ordered by first contribution.
+
+Jarvis Badgley <chipersoft@gmail.com>
+Arthur Klepchukov <arthur.klepchukov@gmail.com>
+Florian Schäfer <florian.schaefer@gmail.com>
