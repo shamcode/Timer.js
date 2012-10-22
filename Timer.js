@@ -18,7 +18,7 @@
 })(this, function () {
 
     function timeStringToMilliseconds(timeString) {
-        if (typeof(timeString) === 'string') {
+        if (typeof timeString === 'string') {
 
             if (isNaN(parseInt(timeString, 10))) {
                 timeString = '1' + timeString;
@@ -41,7 +41,7 @@
             }
         }
 
-        if (typeof(timeString) === 'number') {
+        if (typeof timeString === 'number') {
             return timeString;
         }
 
@@ -109,7 +109,7 @@
         bind: function (when, callback) {
             if (when && callback) {
                 var ticks;
-                if (typeof(when) === 'number') {
+                if (typeof when === 'number') {
                     ticks = when;
                 } else {
                     ticks = millisecondsToTicks(timeStringToMilliseconds(when), this._resolution);
