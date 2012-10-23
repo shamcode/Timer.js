@@ -1,0 +1,26 @@
+{
+    "name": "Timer.js",
+    "description": "Timer.js is a periodic timer for Node.js and the browser.",
+    "homepage": "https://github.com/fschaefer/Timer.js",
+    "author": "Florian Schäfer",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/fschaefer/Timer.js.git"
+    },
+    "keywords": [
+        "interval",
+        "timeout",
+        "timer",
+        "periodic"
+    ],
+    "bugs": {
+        "email": "florian.schaefer+Timer.js@gmail.com",
+        "url": "https://github.com/fschaefer/Timer.js/issues"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "contributors": [],
+    "engine": "node >= 0.8.0",
+    "main": "Timer.js",
+    "version": "0.0.1"
+}
