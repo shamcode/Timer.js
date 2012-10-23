@@ -103,6 +103,9 @@
         ticks: function () {
             return this._ticks;
         },
+        resolution: function () {
+            return this._resolution;
+        },
         running: function () {
             return this._running;
         },
