@@ -111,12 +111,7 @@
         },
         bind: function (when, callback) {
             if (when && callback) {
-                var ticks;
-                if (typeof when === 'number') {
-                    ticks = when;
-                } else {
-                    ticks = millisecondsToTicks(timeStringToMilliseconds(when), this._resolution);
-                }
+                var ticks = millisecondsToTicks(timeStringToMilliseconds(when), this._resolution);
                 this._notifications.push({
                     ticks: ticks,
                     callback: callback
