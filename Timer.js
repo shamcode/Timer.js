@@ -72,7 +72,7 @@
                 setTimeout(function loopsyloop() {
                     self._ticks++;
                     for (var i = 0, l = self._notifications.length; i < l; i++) {
-                        if (self._ticks % self._notifications[i].ticks === 0) {
+                        if (self._notifications[i] && self._ticks % self._notifications[i].ticks === 0) {
                             self._notifications[i].callback.call(self._notifications[i], { ticks: self._ticks, resolution: self._resolution });
                         }
                     }
@@ -124,7 +124,7 @@
                 this._notifications = [];
             } else {
                 for (var i = 0, l = this._notifications.length; i < l; i++) {
-                    if (this._notifications[i].callback === callback) {
+                    if (this._notifications[i] && this._notifications[i].callback === callback) {
                         this._notifications.splice(i, 1);
                     }
                 }
