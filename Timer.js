@@ -135,6 +135,7 @@
         },
         drift: function (timeDrift) {
             this._drift = timeDrift;
+            return this;
         }
     };
 
