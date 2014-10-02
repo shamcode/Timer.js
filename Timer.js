@@ -81,7 +81,8 @@
                         self._timer = setTimeout(loopsyloop, self._resolution + self._drift);
                         self._drift = 0;
                     }
-                }, this._resolution);
+                }, this._resolution + this._drift);
+                this._drift = 0;
             }
             return this;
         },
