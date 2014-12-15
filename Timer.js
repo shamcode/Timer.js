@@ -30,10 +30,10 @@
 
             if (match[0]) {
                 return parseFloat(match[1] || 0) * 86400000 +  // days
-                       parseFloat(match[2] || 0) * 3600000 +   // hours
-                       parseFloat(match[3] || 0) * 60000 +     // minutes
-                       parseFloat(match[4] || 0) * 1000 +      // seconds
-                       parseInt(match[5] || 0, 10);            // milliseconds
+                    parseFloat(match[2] || 0) * 3600000 +   // hours
+                    parseFloat(match[3] || 0) * 60000 +     // minutes
+                    parseFloat(match[4] || 0) * 1000 +      // seconds
+                    parseInt(match[5] || 0, 10);            // milliseconds
             }
 
             if (!isNaN(parseInt(timeString, 10))) {
@@ -63,6 +63,8 @@
         this._ticks = 0;
         this._timer = null;
         this._drift = 0;
+        this._maxTicks = 1;
+        this._isMaximumTick = false;
     }
 
     Timer.prototype = {
@@ -72,10 +74,23 @@
                 this._running = !this._running;
                 setTimeout(function loopsyloop() {
                     self._ticks++;
+                    if (self._ticks > self._maxTicks) {
+                        self._isMaximumTick = true;
+                    }
                     for (var i = 0, l = self._notifications.length; i < l; i++) {
-                        if (self._notifications[i] && self._ticks % self._notifications[i].ticks === 0) {
-                            self._notifications[i].callback.call(self._notifications[i], { ticks: self._ticks, resolution: self._resolution });
+                        if (self._notifications[i]) {
+                            if (self._ticks >= self._notifications[i].ticks) {
+                                self._notifications[i].callback.call(self._notifications[i], { ticks: self._ticks, resolution: self._resolution });
+                            }
+                            if (self._isMaximumTick && self._notifications[i]) {
+                                self._notifications[i].ticks -= self._ticks;
+                                self._maxTicks = Math.max(self._notifications[i].ticks, self._maxTicks);
+                            }
                         }
+                    }
+                    if (self._isMaximumTick) {
+                        self._ticks = 0;
+                        self._isMaximumTick = false;
                     }
                     if (self._running) {
                         self._timer = setTimeout(loopsyloop, self._resolution + self._drift);
@@ -115,16 +130,20 @@
         bind: function (when, callback) {
             if (when && callback) {
                 var ticks = millisecondsToTicks(timeStringToMilliseconds(when), this._resolution);
+                if (!this._isMaximumTick) {
+                    ticks += this._ticks;
+                }
                 this._notifications.push({
                     ticks: ticks,
                     callback: callback
                 });
             }
-            return this;
+            return callback;
         },
         unbind: function (callback) {
             if (!callback) {
                 this._notifications = [];
+                this._maxTicks = 1;
             } else {
                 for (var i = 0, l = this._notifications.length; i < l; i++) {
                     if (this._notifications[i] && this._notifications[i].callback === callback) {
@@ -143,11 +162,10 @@
     Timer.prototype.every = Timer.prototype.bind;
     Timer.prototype.after = function (when, callback) {
         var self = this;
-        Timer.prototype.bind.call(self, when, function fn () {
+        return Timer.prototype.bind.call(self, when, function fn () {
             Timer.prototype.unbind.call(self, fn);
             callback.apply(this, arguments);
         });
-        return this;
     };
 
     return Timer;
