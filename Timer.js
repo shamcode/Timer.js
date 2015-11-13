@@ -72,7 +72,9 @@
             var self = this;
             if (!this._running) {
                 this._running = !this._running;
-                setTimeout(function loopsyloop() {
+                this._timer = setTimeout(function loopsyloop() {
+                    clearTimeout( self._timer );
+                    self._timer = null;
                     self._ticks++;
                     if (self._ticks > self._maxTicks) {
                         self._isMaximumTick = true;
@@ -80,7 +82,14 @@
                     for (var i = 0, l = self._notifications.length; i < l; i++) {
                         if (self._notifications[i]) {
                             if (self._ticks >= self._notifications[i].ticks) {
-                                self._notifications[i].callback.call(self._notifications[i], { ticks: self._ticks, resolution: self._resolution });
+                                self._notifications[i].ticks = self._notifications[i].originalTicks;
+                                if ( !self._isMaximumTick ) {
+                                    self._notifications[i].ticks += self._ticks;
+                                }
+                                self._notifications[i].callback.call(
+                                    self._notifications[i],
+                                    { ticks: self._ticks, resolution: self._resolution }
+                                );
                             }
                             if (self._isMaximumTick && self._notifications[i]) {
                                 self._notifications[i].ticks -= self._ticks;
@@ -127,27 +136,28 @@
         running: function () {
             return this._running;
         },
-        bind: function (when, callback) {
+        bind: function (when, callback, originalCallback) {
             if (when && callback) {
                 var ticks = millisecondsToTicks(timeStringToMilliseconds(when), this._resolution);
-                if (!this._isMaximumTick) {
-                    ticks += this._ticks;
-                }
                 this._notifications.push({
-                    ticks: ticks,
-                    callback: callback
+                    ticks: ticks + (!this._isMaximumTick ? this._ticks : 0),
+                    originalTicks: ticks,
+                    callback: callback,
+                    originalCallback: originalCallback || callback
                 });
             }
-            return callback;
+            return originalCallback || callback;
         },
         unbind: function (callback) {
             if (!callback) {
                 this._notifications = [];
                 this._maxTicks = 1;
             } else {
+                var delta = 0;
                 for (var i = 0, l = this._notifications.length; i < l; i++) {
-                    if (this._notifications[i] && this._notifications[i].callback === callback) {
-                        this._notifications.splice(i, 1);
+                    if (this._notifications[i] && this._notifications[i].originalCallback === callback) {
+                            this._notifications.splice(i - delta, 1);
+                            delta++;
                     }
                 }
             }
@@ -163,9 +173,9 @@
     Timer.prototype.after = function (when, callback) {
         var self = this;
         return Timer.prototype.bind.call(self, when, function fn () {
-            Timer.prototype.unbind.call(self, fn);
+            Timer.prototype.unbind.call(self, callback);
             callback.apply(this, arguments);
-        });
+        }, callback);
     };
 
     return Timer;
